@@ -2,7 +2,7 @@
 
 namespace UniversitySystem.DataAccess.Models
 {
-    public class Course
+    public class Course 
     {
         public int CourseId { get; set; }
 

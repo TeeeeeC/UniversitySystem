@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using UniversitySystem.DataAccess.Models;
 
 namespace UniversitySystem.DataAccess
@@ -15,6 +16,11 @@ namespace UniversitySystem.DataAccess
         public DbSet<StudentCourse> StudentCourses { get; set; }
 
         public DbSet<Course> Courses { get; set; }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return base.SaveChangesAsync();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

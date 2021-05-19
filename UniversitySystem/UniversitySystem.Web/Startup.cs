@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UniversitySystem.Business;
+using UniversitySystem.Business.Interfaces;
+using UniversitySystem.Business.IoC;
 using UniversitySystem.DataAccess.IoC;
 
 namespace UniversitySystem.Web
@@ -19,7 +23,10 @@ namespace UniversitySystem.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataAccess(Configuration);
-
+            services.AddBusiness(Configuration);
+            services.AddScoped(typeof(IStudentService), typeof(StudentService));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
         }
 
@@ -39,11 +46,15 @@ namespace UniversitySystem.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                    name: "Default",
+                    pattern: "/{controller}/{action}/{id?}",
+                    defaults: new { controller = "student", action = "login" });
             });
         }
     }

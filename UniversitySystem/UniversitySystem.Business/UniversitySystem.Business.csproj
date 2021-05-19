@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="IoC\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

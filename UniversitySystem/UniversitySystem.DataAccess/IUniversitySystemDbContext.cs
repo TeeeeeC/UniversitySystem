@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using UniversitySystem.DataAccess.Models;
 
 namespace UniversitySystem.DataAccess
@@ -11,7 +12,7 @@ namespace UniversitySystem.DataAccess
 
         EntityEntry Entry([NotNullAttribute] object entity);
 
-        int SaveChanges();
+        Task<int> SaveChangesAsync();
 
         DbSet<Student> Students { get; set; }
 
