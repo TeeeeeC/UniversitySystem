@@ -3,7 +3,7 @@ using UniversitySystem.Web.Attributes;
 
 namespace UniversitySystem.Web.Models.Student
 {
-    public class LoginViewModel
+    public class RegisterViewModel
     {
         [Required(ErrorMessage = "Please enter email")]
         [CustomEmailAddress(ErrorMessage = "Please enter valid email")]

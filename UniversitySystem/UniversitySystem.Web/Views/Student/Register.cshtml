@@ -1,5 +1,5 @@
-﻿@model UniversitySystem.Web.Models.Student.LoginViewModel
-@{ ViewBag.Title = "Login"; }
+﻿@model UniversitySystem.Web.Models.Student.RegisterViewModel
+@{ ViewBag.Title = "Register"; }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <div class="row">
@@ -17,7 +17,7 @@
                 <span asp-validation-for="@Model.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-dark">Log in</button>
+                <button type="submit" class="btn btn-dark">Register</button>
             </div>
         </form>
     </div>

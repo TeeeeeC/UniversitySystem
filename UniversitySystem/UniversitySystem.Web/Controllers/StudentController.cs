@@ -31,6 +31,12 @@ namespace UniversitySystem.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -45,6 +51,24 @@ namespace UniversitySystem.Web.Controllers
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var message = await _studentService.Register(new RegisterRequest { Email = model.Email, Password = model.Password });
+            if (string.IsNullOrEmpty(message))
+            {
+                await _studentService.Login(new LoginRequest { Email = model.Email, Password = model.Password });
+                return RedirectToAction("Index", "Course");
+            }
+
+            ModelState.AddModelError(string.Empty, message);
             return View(model);
         }
 

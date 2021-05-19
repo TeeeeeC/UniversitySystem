@@ -9,6 +9,6 @@ namespace UniversitySystem.Business.Interfaces
 
         Task Logout();
 
-        Task SignIn(StudentSignInRequest request);
+        Task<string> Register(RegisterRequest request);
     }
 }

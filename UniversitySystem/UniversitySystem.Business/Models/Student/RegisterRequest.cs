@@ -1,6 +1,6 @@
 ﻿namespace UniversitySystem.Business.Models.Student
 {
-    public class StudentSignInRequest
+    public class RegisterRequest
     {
         public string Email { get; set; }
 
