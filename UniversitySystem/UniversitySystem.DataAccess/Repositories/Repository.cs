@@ -35,22 +35,22 @@ namespace UniversitySystem.DataAccess.Repositories
                             .ToListAsync();
         }
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<int> AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<int> UpdateAsync(TEntity entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public async Task<int> DeleteAsync(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }

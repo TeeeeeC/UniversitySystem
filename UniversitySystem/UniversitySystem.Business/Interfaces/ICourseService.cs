@@ -15,5 +15,9 @@ namespace UniversitySystem.Business.Interfaces
         Task UpdateAsync(UpdateCourseRequest request);
 
         Task DeleteAsync(int courseId);
+
+        Task<bool> JoinAsync(int courseId);
+
+        Task<GetManageCourseResponse> GetAllByStudentIdAsync(int page, int pageSize);
     }
 }

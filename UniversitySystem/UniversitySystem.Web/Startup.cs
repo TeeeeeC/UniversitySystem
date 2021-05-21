@@ -28,7 +28,7 @@ namespace UniversitySystem.Web
             services.AddScoped(typeof(ICourseService), typeof(CourseService));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddHttpContextAccessor();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNToastNotifyToastr();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,6 +49,8 @@ namespace UniversitySystem.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseNToastNotify();
 
             app.UseEndpoints(endpoints =>
             {

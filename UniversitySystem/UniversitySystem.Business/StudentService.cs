@@ -37,7 +37,7 @@ namespace UniversitySystem.Business
                 var passwordMatch = BCrypt.Net.BCrypt.Verify(request.Password, studentDb.Password);
                 if (passwordMatch)
                 {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Email, request.Email) };
+                    var claims = new List<Claim> { new Claim(ClaimTypes.Email, request.Email), new Claim(ClaimTypes.NameIdentifier, studentDb.StudentId.ToString()) };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,

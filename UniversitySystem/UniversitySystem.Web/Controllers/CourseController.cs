@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using System.Linq;
 using System.Threading.Tasks;
 using UniversitySystem.Business.Interfaces;
@@ -12,26 +13,49 @@ namespace UniversitySystem.Web.Controllers
     public class CourseController : Controller
     {
         private readonly ICourseService _courseService;
+        private readonly IToastNotification _toastNotification;
 
-        public CourseController(ICourseService courseService)
+        public CourseController(ICourseService courseService,
+            IToastNotification toastNotification)
         {
             _courseService = courseService;
+            _toastNotification = toastNotification;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View();
+            return View(await this.GetManageCourseViewModel(page));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ManageCourses(int page = 1)
+        public async Task<IActionResult> MyCourses(int page = 1)
         {
-            var response = await _courseService.GetAsync(page, 5);
+            var response = await _courseService.GetAllByStudentIdAsync(page, 5);
             var courses = response.Courses
                 .Select(c => new CourseViewModel { CourseId = c.CourseId, Name = c.Name })
                 .ToList();
 
             return View(new ManageCourseViewModel { CurrentPage = page, TotalPages = response.TotalPages, Courses = courses });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Join(int id, int page)
+        {
+            var isSuccessFull = await _courseService.JoinAsync(id);
+            if (isSuccessFull)
+            {
+                _toastNotification.AddSuccessToastMessage("You are joined to this course.");
+                return RedirectToAction("MyCourses");
+            }
+
+            _toastNotification.AddErrorToastMessage("You are already registered to this course.");
+
+            return RedirectToAction("Index", new { page });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageCourses(int page = 1)
+        {
+            return View(await this.GetManageCourseViewModel(page));
         }
 
         [HttpGet]
@@ -48,7 +72,9 @@ namespace UniversitySystem.Web.Controllers
             {
                 await _courseService.CreateAsync(new CreateCourseRequest { Name = model.Name });
 
-                return RedirectToAction("ManageCourses", new { page = page });
+                _toastNotification.AddSuccessToastMessage("New course was created.");
+
+                return RedirectToAction("ManageCourses", new { page });
             }
 
             return View(model);
@@ -69,7 +95,9 @@ namespace UniversitySystem.Web.Controllers
             {
                 await _courseService.UpdateAsync(new UpdateCourseRequest { CourseId = model.CourseId, Name = model.Name });
 
-                return RedirectToAction("ManageCourses", new { page = page });
+                _toastNotification.AddSuccessToastMessage("The course was updated.");
+
+                return RedirectToAction("ManageCourses", new { page });
             }
 
             return View(model);
@@ -80,7 +108,19 @@ namespace UniversitySystem.Web.Controllers
         {
             await _courseService.DeleteAsync(id);
 
-            return RedirectToAction("ManageCourses", new { page = page });
+            _toastNotification.AddSuccessToastMessage("The course was deleted.");
+
+            return RedirectToAction("ManageCourses", new { page });
+        }
+
+        private async Task<ManageCourseViewModel> GetManageCourseViewModel(int page)
+        {
+            var response = await _courseService.GetAsync(page, 5);
+            var courses = response.Courses
+                .Select(c => new CourseViewModel { CourseId = c.CourseId, Name = c.Name })
+                .ToList();
+
+            return new ManageCourseViewModel { CurrentPage = page, TotalPages = response.TotalPages, Courses = courses };
         }
     }
 }

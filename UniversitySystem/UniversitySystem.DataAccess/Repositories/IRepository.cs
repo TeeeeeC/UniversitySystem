@@ -13,10 +13,10 @@ namespace UniversitySystem.DataAccess.Repositories
 
         Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task AddAsync(TEntity entity);
+        Task<int> AddAsync(TEntity entity);
 
-        Task DeleteAsync(TEntity entity);
+        Task<int> DeleteAsync(TEntity entity);
 
-        Task UpdateAsync(TEntity entity);
+        Task<int> UpdateAsync(TEntity entity);
     }
 }

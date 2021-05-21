@@ -24,6 +24,9 @@ namespace UniversitySystem.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Student>()
+                .HasIndex(s => s.Email)
+                .IsUnique();
             modelBuilder.Entity<StudentCourse>()
                 .HasKey(sc => new { sc.StudentID, sc.CourseID });
             modelBuilder.Entity<StudentCourse>()
