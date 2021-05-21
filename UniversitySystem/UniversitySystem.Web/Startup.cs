@@ -25,6 +25,7 @@ namespace UniversitySystem.Web
             services.AddDataAccess(Configuration);
             services.AddBusiness(Configuration);
             services.AddScoped(typeof(IStudentService), typeof(StudentService));
+            services.AddScoped(typeof(ICourseService), typeof(CourseService));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
@@ -34,11 +35,11 @@ namespace UniversitySystem.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error/errorLocal");
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/error");
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

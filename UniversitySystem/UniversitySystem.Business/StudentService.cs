@@ -31,7 +31,7 @@ namespace UniversitySystem.Business
         {
             try
             {
-                var studentDb = (await _studentsRepository.List(s => s.Email == request.Email)).FirstOrDefault();
+                var studentDb = (await _studentsRepository.GetAsync(s => s.Email == request.Email)).FirstOrDefault();
                 if (studentDb == null) return false;
 
                 var passwordMatch = BCrypt.Net.BCrypt.Verify(request.Password, studentDb.Password);
@@ -70,11 +70,11 @@ namespace UniversitySystem.Business
         {
             try
             {
-                var studentDb = (await _studentsRepository.List(s => s.Email == request.Email)).FirstOrDefault();
+                var studentDb = (await _studentsRepository.GetAsync(s => s.Email == request.Email)).FirstOrDefault();
                 if (studentDb == null)
                 {
                     var student = new Student { Email = request.Email, Password = BCrypt.Net.BCrypt.HashPassword(request.Password) };
-                    await _studentsRepository.Add(student);
+                    await _studentsRepository.AddAsync(student);
                 }
                 else
                 {

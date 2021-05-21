@@ -16,37 +16,38 @@ namespace UniversitySystem.DataAccess.Repositories
             _dbContext = dbContext;
         }
 
-        public async virtual Task<TEntity> GetById(int id)
+        public async virtual Task<TEntity> GetByIdAsync(int id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async virtual Task<IEnumerable<TEntity>> List()
+        public async virtual Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await _dbContext.Set<TEntity>().ToListAsync();
+            return await _dbContext.Set<TEntity>()
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public async virtual Task<IEnumerable<TEntity>> List(Expression<Func<TEntity, bool>> predicate)
+        public async virtual Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbContext.Set<TEntity>()
                             .Where(predicate)
                             .ToListAsync();
         }
 
-        public async Task Add(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
-            // In case AsNoTracking is used
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
             await _dbContext.SaveChangesAsync();
