@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UniversitySystem.DataAccess.Models;
 
@@ -30,6 +29,14 @@ namespace UniversitySystem.DataAccess
                 new Course { Name = "C# Basics" },
                 new Course { Name = "C# Advance" },
                 new Course { Name = "Databases" },
+                new Course { Name = "Math" },
+                new Course { Name = "Literature" },
+                new Course { Name = "Java" },
+                new Course { Name = "ASP.NET MVC" },
+                new Course { Name = "ASP.NET Web Forms" },
+                new Course { Name = "CSS" },
+                new Course { Name = "HTML" },
+                new Course { Name = "Web Services" },
             };
             context.Courses.AddRange(courses);
             context.SaveChanges();

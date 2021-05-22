@@ -1,35 +1,40 @@
 ﻿@model UniversitySystem.Web.Models.Course.ManageCourseViewModel
 @{
     ViewBag.Title = "My Courses";
-}
-
-<h2>@ViewBag.Title</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Course Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var course in Model.Courses)
-        {
-            <tr>
-                <td>@course.CourseId</td>
-                <td>@course.Name</td>
-            </tr>
-        }
-    </tbody>
-</table>
-@{
     var prevDisabled = Model.HasPreviousPage ? "" : "disabled";
     var nextDisabled = Model.HasNextPage ? "" : "disabled";
 }
-<p>
-    <a asp-action="MyCourses"
-       asp-route-page="@(Model.CurrentPage - 1)"
-       class="btn btn-dark text-white border-white @prevDisabled">Previous</a>
-    <a asp-action="MyCourses"
-       asp-route-page="@(Model.CurrentPage + 1)"
-       class="btn btn-dark text-white @nextDisabled">Next</a>
-</p>
+
+<h2>@ViewBag.Title</h2>
+@if (Model.Courses.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Course Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in Model.Courses)
+            {
+                <tr>
+                    <td>@course.CourseId</td>
+                    <td>@course.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>
+        <a asp-action="MyCourses"
+           asp-route-page="@(Model.CurrentPage - 1)"
+           class="btn btn-dark text-white border-white @prevDisabled">Previous</a>
+        <a asp-action="MyCourses"
+           asp-route-page="@(Model.CurrentPage + 1)"
+           class="btn btn-dark text-white @nextDisabled">Next</a>
+    </p>
+}
+else
+{
+    <h4>There are no available courses.</h4>
+}
